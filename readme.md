@@ -43,7 +43,7 @@ json { "planName": "Premium Plan", "ratePerUnit": 0.05, "planType": "PREPAID", "
 
 POST /admin/addCustomer
 
-json { "customerName": "Jane Smith", "customerMail": "jane@example.com", "customerPhone": "+1234567890" }
+json[ { "customerName": "Jane Smith", "customerMail": "jane@example.com", "customerPhone": "+1234567890" }](https://meet.google.com/uqq-oond-bmp)
 
 ### 8. Get invoices for a customer
 

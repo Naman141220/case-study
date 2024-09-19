@@ -493,7 +493,7 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
 
 
 
-app.post("/setDueDateTwoDaysFromNow", async (req, res) => {
+app.post("/admin/setDueDateTwoDaysFromNow", async (req, res) => {
   const { customerMail } = req.body;
 
   try {
