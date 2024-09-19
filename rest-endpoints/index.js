@@ -456,12 +456,14 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
       if (daysLeft <= 5) {
         return res.status(200).json({
           message: "Your plan validity is about to expire.",
-          daysLeft
+          daysLeft,
+          plan
         });
       } else {
         return res.status(200).json({
           message: "Customer's active plan is still valid.",
-          daysLeft
+          daysLeft,
+          plan
         });
       }
     } else if (planType === 'POSTPAID') {
@@ -472,12 +474,14 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
 
         return res.status(200).json({
           message: "Invoice generated as due date is approaching.",
-          invoice: generatedInvoice
+          invoice: generatedInvoice,
+          plan
         });
       } else {
         return res.status(200).json({
           message: "Customer's active plan is still valid.",
-          daysLeft
+          daysLeft,
+          plan
         });
       }
     }
