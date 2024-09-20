@@ -20,6 +20,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
+    "pdfkit": "^0.15.0",
     "prisma": "^5.19.1",
     "rest-endpoints": "file:",
     "swagger-jsdoc": "^6.2.8",

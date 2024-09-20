@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import PDFDocument from 'pdfkit';
 import { PrismaClient } from "@prisma/client";
 // const {PrismaClient} = require("@prisma/client")
 const prisma = new PrismaClient();
@@ -2097,6 +2098,102 @@ app.post("/viewPlan",async (req,res)=>{
 
   res.status(201).json({plan})
 })
+
+app.get('/downloadInvoice/:invoiceId', async (req, res) => {
+  const { invoiceId } = req.params;
+
+  try {
+    const invoice = await prisma.invoice.findUnique({
+      where: { invoiceId: parseInt(invoiceId) },
+      include: { customer: true, plan: true },
+    });
+
+    if (!invoice) {
+      return res.status(404).json({ error: 'Invoice not found' });
+    }
+
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // Set response headers to indicate a file download
+    res.setHeader('Content-Disposition', `attachment; filename=invoice_${invoiceId}.pdf`);
+    res.setHeader('Content-Type', 'application/pdf');
+
+    // Pipe the PDF into the response
+    doc.pipe(res);
+
+    // Set up PDF metadata
+    doc.info.Title = `Invoice`;
+    doc.fontSize(14).text(`Invoice`, { align: 'center', margin: 10 });
+
+    doc.info.Author = 'TELSTAR';
+
+    // Add the company logo (optional, if you have one)
+    // doc.image('path/to/logo.png', 50, 45, { width: 50 });
+    
+    // Add company information
+    doc
+      .fontSize(20)
+      .text('TELSTAR', { align: 'center' })
+      .fontSize(10)
+      .text('30th Main Road', { align: 'center' })
+      .text('Bengaluru, Karnataka, 560102', { align: 'center' })
+      .text('Phone: 6263528833', { align: 'center' })
+      .moveDown(2);
+
+    // Invoice title
+    doc
+      .fontSize(18)
+      .text(`InvoiceId:- #${invoiceId}`, { align: 'center', underline: true })
+      .moveDown(1);
+
+    // Customer Information
+    doc
+      .fontSize(12)
+      .text('Customer Information:', { underline: true })
+      .moveDown(0.5)
+      .fontSize(10)
+      .text(`Name: ${invoice.customer.customerName}`)
+      .text(`Email: ${invoice.customer.customerMail}`)
+      .text(`Phone: ${invoice.customer.customerPhone}`)
+      .moveDown(1);
+
+    // Plan Information
+    doc
+      .fontSize(12)
+      .text('Plan Information:', { underline: true })
+      .moveDown(0.5)
+      .fontSize(10)
+      .text(`Plan Name: ${invoice.plan.planName}`)
+      .text(`Description: ${invoice.plan.description}`)
+      .text(`Billing Cycle: ${invoice.plan.billingCycle}`)
+      .moveDown(1);
+
+    // Invoice Details
+    doc
+      .fontSize(12)
+      .text('Invoice Details:', { underline: true })
+      .moveDown(0.5)
+      .fontSize(10)
+      .text(`Date: ${invoice.date.toDateString()}`)
+      .text(`Units: ${invoice.units}`)
+      .text(`Amount: $${invoice.amount.toFixed(2)}`)
+      .text(`Status: ${invoice.status}`)
+      .moveDown(2);
+
+    // Footer
+    doc
+      .fontSize(10)
+      .text('Thank you for your business!', { align: 'center' });
+
+    // Finalize the PDF and end the stream
+    doc.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
