@@ -543,12 +543,6 @@ app.post("/admin/setDueDateTwoDaysFromNow", async (req, res) => {
 });
 
 
-// app.get('/viewInvoice',(req,res)=>{
-//     const customerId = req.body
-//     res.send({
-
-//     })
-// })
 /**
  * @swagger
  * /generateInvoice:
@@ -764,7 +758,20 @@ app.post("/payPostpaidInvoice", async (req, res) => {
           },
         },
       });
-      
+      // Update the customer's `plansList`
+    customer = await prisma.customer.update({
+      where: { customerMail: customerMail },
+      data: {
+        plansList: {
+          connect: { id: customerPlan.id },
+        },
+        customerCurrPlan: 0,
+      },
+      include: {
+        plansList: true, // Fetch the updated plansList
+      },
+    });
+
       if (customerPlan) {
         // Delete the customerPlan entry
         await prisma.customerPlan.delete({
@@ -779,6 +786,7 @@ app.post("/payPostpaidInvoice", async (req, res) => {
       });
     } else {
       // If changePlan is false, update the plan's dueDate, activationDate, and datePurchased in the customerPlan table
+
       let customerPlan = await prisma.customerPlan.findUnique({
         where: {
           customerId_planId: {
@@ -787,6 +795,20 @@ app.post("/payPostpaidInvoice", async (req, res) => {
           },
         },
       });
+
+      // Update the customer's `plansList`
+    customer = await prisma.customer.update({
+      where: { customerMail: customerMail },
+      data: {
+        plansList: {
+          connect: { id: customerPlan.id },
+        },
+        customerCurrPlan: plan.planId,
+      },
+      include: {
+        plansList: true, // Fetch the updated plansList
+      },
+    });
 
       if (!customerPlan) {
         return res.status(404).json({ error: "Customer plan not found" });
@@ -1084,6 +1106,18 @@ app.post("/buyPlan", async (req, res) => {
       data: customerPlanData,
     });
 
+    customer = await prisma.customer.update({
+      where: { customerMail: customerMail },
+      data: {
+        plansList: {
+          connect: { id: customerPlan.id },
+        },
+        customerCurrPlan: plan.planId,
+      },
+      include: {
+        plansList: true, // Fetch the updated plansList
+      },
+    });
     console.log("Customer plan created:", customerPlan);
 
     // Create a new invoice
@@ -1194,30 +1228,63 @@ app.post("/buyPlan", async (req, res) => {
  */
 app.post("/viewHistory", async (req, res) => {
   const { customerMail } = req.body;
-  
-  // Query to fetch a customer and their plansList
-  const customerWithPlans = await prisma.customer.findUnique({
-    where: { customerMail: customerMail }, // or use customerMail if that's your lookup field
-    include: {
-      plansList: true, // This includes the list of plans associated with the customer
-    },
-  });
 
-  if (!customerWithPlans) {
-    return res.status(404).json({ error: "Customer does not exist" });
+  try {
+    // Fetch the customer along with their invoices and associated plans
+    const customerWithInvoices = await prisma.customer.findUnique({
+      where: { customerMail },
+      include: {
+        invoiceList: {
+          where: {
+            OR: [
+              { status: "paid" },
+              { status: "N/A" },
+            ],
+          },
+          orderBy: { date: 'desc' }, // Order invoices by date in descending order
+          include: {
+            plan: true, // Include the plan details in the invoices
+          },
+        },
+      },
+    });
+
+    if (!customerWithInvoices) {
+      return res.status(404).json({ error: "Customer does not exist" });
+    }
+
+    // Extract unique plan IDs from the filtered invoices
+    const uniquePlanMap = new Map();
+
+    customerWithInvoices.invoiceList.forEach(invoice => {
+      if (!uniquePlanMap.has(invoice.planId)) {
+        uniquePlanMap.set(invoice.planId, invoice.plan);
+      }
+    });
+
+    const plansList = Array.from(uniquePlanMap.values());
+
+    if (plansList.length === 0) {
+      return res.status(200).json({ message: "Customer has no relevant plans in invoice history" });
+    }
+
+    // Respond with the customer's details and the list of unique plans
+    res.status(200).json({
+      customer: {
+        customerId: customerWithInvoices.customerId,
+        customerName: customerWithInvoices.customerName,
+        customerMail: customerWithInvoices.customerMail,
+      },
+      plansList,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  // Accessing the plansList
-  const plansList = customerWithPlans.plansList;
-
-  if (plansList.length === 0) {
-    return res.status(200).json({ message: "Customer has no previous plans" });
-  }
-
-  // Now you can use `plansList` as needed
-  // console.log(plansList);
-  res.status(200).json({ customer: customerWithPlans, plansList });
 });
+
+
 
 app.post("/viewInvoiceHistory", async(req,res)=>{
   const { customerMail } = req.body;
