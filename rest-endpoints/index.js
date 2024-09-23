@@ -225,7 +225,7 @@ async function generateInvoiceForCustomer(customerMail) {
  *   post:
  *     summary: Register a new customer
  *     tags: 
- *       - Customers
+ *       - Authentication
  *     requestBody:
  *       required: true
  *       content:
@@ -343,6 +343,7 @@ let loggedInCustomers = [];
  *       500:
  *         description: There was a problem logging in
  */
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -378,7 +379,44 @@ app.post('/login', async (req, res) => {
   }
 });
 
-
+/**
+ * @swagger
+ * /checkCustomerPlanStatus:
+ *   post:
+ *     summary: Check the status of a customer's active plan
+ *     tags: 
+ *       - Plans
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerMail:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *     responses:
+ *       200:
+ *         description: Customer's plan status retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 daysLeft:
+ *                   type: integer
+ *                 invoice:
+ *                   type: object
+ *                 plan:
+ *                   type: object
+ *       404:
+ *         description: Customer or plan not found
+ *       500:
+ *         description: Internal server error
+ */
 app.post("/checkCustomerPlanStatus", async (req, res) => {
   const { customerMail } = req.body;
 
@@ -493,7 +531,41 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
 });
 
 
-
+/**
+ * @swagger
+ * /admin/setDueDateTwoDaysFromNow:
+ *   post:
+ *     summary: Set the due date of a customer's active plan to two days from now
+ *     tags: 
+ *       - Admin
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerMail:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *     responses:
+ *       200:
+ *         description: Due date updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Due date updated to two days from now.
+ *                 customerPlan:
+ *                   type: object
+ *       404:
+ *         description: Customer or plan not found
+ *       500:
+ *         description: Internal server error
+ */
 app.post("/admin/setDueDateTwoDaysFromNow", async (req, res) => {
   const { customerMail } = req.body;
 
@@ -575,7 +647,7 @@ app.post("/admin/setDueDateTwoDaysFromNow", async (req, res) => {
  *                   type: object
  *                   properties:
  *                     invoiceId:
- *                       type: string
+ *                       type: integer
  *                       example: 12345
  *                     customerName:
  *                       type: string
@@ -711,6 +783,50 @@ app.post("/generateInvoice", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /payPostpaidInvoice:
+ *   post:
+ *     summary: Pay a postpaid invoice for a customer
+ *     tags: 
+ *       - Invoices
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerMail:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *               invoiceId:
+ *                 type: integer
+ *                 example: 12345
+ *               changePlan:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Invoice paid successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invoice paid successfully.
+ *                 invoice:
+ *                   type: object
+ *                 newInvoice:
+ *                   type: object
+ *                 customer:
+ *                   type: object
+ *       404:
+ *         description: Customer or invoice not found
+ *       500:
+ *         description: Internal server error
+ */
 app.post("/payPostpaidInvoice", async (req, res) => {
   const { customerMail, invoiceId, changePlan } = req.body;
 
@@ -906,84 +1022,10 @@ app.post("/payPostpaidInvoice", async (req, res) => {
  *               properties:
  *                 customer:
  *                   type: object
- *                   properties:
- *                     customerId:
- *                       type: integer
- *                       example: 1
- *                     customerName:
- *                       type: string
- *                       example: John Doe
- *                     customerMail:
- *                       type: string
- *                       example: johndoe@example.com
- *                     customerCurrPlan:
- *                       type: integer
- *                       example: 101
- *                     customerType:
- *                       type: string
- *                       example: PREPAID
  *                 plan:
  *                   type: object
- *                   properties:
- *                     planId:
- *                       type: integer
- *                       example: 101
- *                     planName:
- *                       type: string
- *                       example: Basic Plan
- *                     ratePerUnit:
- *                       type: number
- *                       example: 1.5
- *                     prepaidPlans:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           prepaidBalance:
- *                             type: number
- *                             example: 100.0
- *                           unitsAvailable:
- *                             type: integer
- *                             example: 100
- *                     postpaidPlans:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           billingCycle:
- *                             type: string
- *                             example: Monthly
- *                           unitsUsed:
- *                             type: integer
- *                             example: 50
  *                 invoice:
  *                   type: object
- *                   properties:
- *                     invoiceId:
- *                       type: string
- *                       example: 12345
- *                     customerName:
- *                       type: string
- *                       example: John Doe
- *                     customerId:
- *                       type: integer
- *                       example: 1
- *                     planId:
- *                       type: integer
- *                       example: 101
- *                     units:
- *                       type: integer
- *                       example: 100
- *                     date:
- *                       type: string
- *                       format: date-time
- *                       example: 2024-09-05T03:40:12.851Z
- *                     amount:
- *                       type: number
- *                       example: 500.00
- *                     planType:
- *                       type: string
- *                       example: PREPAID
  *       400:
  *         description: Plan not found or Invalid plan type
  *       404:
@@ -1170,6 +1212,7 @@ app.post("/buyPlan", async (req, res) => {
   }
 });
 
+
 /**
  * @swagger
  * /viewHistory:
@@ -1197,30 +1240,8 @@ app.post("/buyPlan", async (req, res) => {
  *               properties:
  *                 customer:
  *                   type: object
- *                   properties:
- *                     customerId:
- *                       type: integer
- *                       example: 1
- *                     customerName:
- *                       type: string
- *                       example: John Doe
- *                     customerMail:
- *                       type: string
- *                       example: johndoe@example.com
- *                     planList:
- *                       type: array
- *                       items:
- *                         type: object
- *                         properties:
- *                           planId:
- *                             type: integer
- *                             example: 101
- *                           planName:
- *                             type: string
- *                             example: Basic Plan
- *                           ratePerUnit:
- *                             type: number
- *                             example: 1.5
+ *                 plansList:
+ *                   type: array
  *       404:
  *         description: Customer not found
  *       500:
@@ -1285,7 +1306,38 @@ app.post("/viewHistory", async (req, res) => {
 });
 
 
-
+/**
+ * @swagger
+ * /viewInvoiceHistory:
+ *   post:
+ *     summary: View the invoice history of a customer
+ *     tags: 
+ *       - Invoices
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               customerMail:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved customer invoice history
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 invoiceList:
+ *                   type: array
+ *       404:
+ *         description: Customer not found
+ *       500:
+ *         description: Internal server error
+ */
 app.post("/viewInvoiceHistory", async(req,res)=>{
   const { customerMail } = req.body;
   
@@ -1318,9 +1370,8 @@ app.post("/viewInvoiceHistory", async(req,res)=>{
  * /admin/addPlan:
  *   post:
  *     summary: Add a new plan
- *     description: Creates a new plan and adds it to the database. Supports both prepaid and postpaid plans.
  *     tags:
- *       - Plans
+ *       - Admin
  *     requestBody:
  *       required: true
  *       content:
@@ -1330,24 +1381,20 @@ app.post("/viewInvoiceHistory", async(req,res)=>{
  *             properties:
  *               planName:
  *                 type: string
- *                 description: The name of the plan
- *                 example: "Basic Plan"
+ *                 example: Basic Plan
  *               ratePerUnit:
  *                 type: number
- *                 description: The rate per unit for the plan
  *                 example: 0.05
  *               planType:
  *                 type: string
- *                 description: The type of the plan (PREPAID or POSTPAID)
- *                 example: "PREPAID"
+ *                 enum: [PREPAID, POSTPAID]
+ *                 example: PREPAID
  *               prepaidBalance:
  *                 type: number
- *                 description: The prepaid balance for prepaid plans
  *                 example: 100
  *               billingCycle:
  *                 type: string
- *                 description: The billing cycle for postpaid plans
- *                 example: "MONTHLY"
+ *                 example: MONTHLY
  *     responses:
  *       201:
  *         description: Plan created successfully
@@ -1358,51 +1405,14 @@ app.post("/viewInvoiceHistory", async(req,res)=>{
  *               properties:
  *                 plan:
  *                   type: object
- *                   properties:
- *                     planId:
- *                       type: string
- *                       description: The ID of the plan
- *                     planName:
- *                       type: string
- *                       description: The name of the plan
- *                     ratePerUnit:
- *                       type: number
- *                       description: The rate per unit for the plan
  *                 prepaidPlan:
  *                   type: object
- *                   properties:
- *                     planId:
- *                       type: string
- *                       description: The ID of the prepaid plan
- *                     unitsAvailable:
- *                       type: number
- *                       description: The units available for the prepaid plan
- *                     prepaidBalance:
- *                       type: number
- *                       description: The prepaid balance
  *                 postpaidPlan:
  *                   type: object
- *                   properties:
- *                     planId:
- *                       type: string
- *                       description: The ID of the postpaid plan
- *                     unitsUsed:
- *                       type: number
- *                       description: The units used for the postpaid plan
- *                     billingCycle:
- *                       type: string
- *                       description: The billing cycle
  *       400:
  *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Missing prepaidBalance for prepaid plan"
+ *       500:
+ *         description: Internal server error
  */
 app.post("/admin/addPlan", async (req, res) => {
   const { planName, ratePerUnit, planType, prepaidBalance, billingCycle } = req.body;
@@ -1476,9 +1486,8 @@ app.post("/admin/addPlan", async (req, res) => {
  * /admin/addCustomer:
  *   post:
  *     summary: Add a new customer
- *     description: Creates a new customer and adds them to the database.
  *     tags:
- *       - Customers
+ *       - Admin
  *     requestBody:
  *       required: true
  *       content:
@@ -1488,16 +1497,13 @@ app.post("/admin/addPlan", async (req, res) => {
  *             properties:
  *               customerName:
  *                 type: string
- *                 description: The name of the customer
- *                 example: "John Doe"
+ *                 example: John Doe
  *               customerMail:
  *                 type: string
- *                 description: The email of the customer
- *                 example: "john.doe@example.com"
+ *                 example: johndoe@example.com
  *               customerPhone:
  *                 type: string
- *                 description: The phone number of the customer
- *                 example: "+1234567890"
+ *                 example: 1234567890
  *     responses:
  *       201:
  *         description: Customer created successfully
@@ -1508,36 +1514,10 @@ app.post("/admin/addPlan", async (req, res) => {
  *               properties:
  *                 cust:
  *                   type: object
- *                   properties:
- *                     customerId:
- *                       type: string
- *                       description: The ID of the customer
- *                     customerName:
- *                       type: string
- *                       description: The name of the customer
- *                     customerCurrPlan:
- *                       type: number
- *                       description: The current plan of the customer
- *                     customerMail:
- *                       type: string
- *                       description: The email of the customer
- *                     customerPhone:
- *                       type: string
- *                       description: The phone number of the customer
- *                     password:
- *                       type: string
- *                       description: The password for the customer account
  *       400:
  *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Invalid input data"
+ *       500:
+ *         description: Internal server error
  */
 app.post("/admin/addCustomer", async (req, res) => {
   const { customerName, customerMail, customerPhone } = req.body;
@@ -1583,7 +1563,6 @@ app.post("/admin/addCustomer", async (req, res) => {
  * /invoices:
  *   post:
  *     summary: Get invoices for a customer
- *     description: Retrieves all invoices for a customer based on their email.
  *     tags:
  *       - Invoices
  *     requestBody:
@@ -1595,8 +1574,7 @@ app.post("/admin/addCustomer", async (req, res) => {
  *             properties:
  *               customerMail:
  *                 type: string
- *                 description: The email of the customer
- *                 example: "john.doe@example.com"
+ *                 example: johndoe@example.com
  *     responses:
  *       200:
  *         description: A list of invoices
@@ -1606,31 +1584,8 @@ app.post("/admin/addCustomer", async (req, res) => {
  *               type: array
  *               items:
  *                 type: object
- *                 properties:
- *                   invoiceId:
- *                     type: string
- *                     description: The ID of the invoice
- *                   customerId:
- *                     type: string
- *                     description: The ID of the customer
- *                   amount:
- *                     type: number
- *                     description: The amount of the invoice
- *                   date:
- *                     type: string
- *                     format: date-time
- *                     description: The date of the invoice
  *       400:
  *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Invalid input data"
  */
 app.post("/invoices",async (req, res) => {
   const {customerMail} = req.body
@@ -1650,7 +1605,6 @@ app.post("/invoices",async (req, res) => {
  * /invoices/{invoiceId}:
  *   get:
  *     summary: Get invoice by ID
- *     description: Retrieves a specific invoice based on the invoice ID.
  *     tags:
  *       - Invoices
  *     parameters:
@@ -1668,31 +1622,8 @@ app.post("/invoices",async (req, res) => {
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 invoiceId:
- *                   type: integer
- *                   description: The ID of the invoice
- *                 customerId:
- *                   type: string
- *                   description: The ID of the customer
- *                 amount:
- *                   type: number
- *                   description: The amount of the invoice
- *                 date:
- *                   type: string
- *                   format: date-time
- *                   description: The date of the invoice
  *       400:
  *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Invalid invoice ID"
  */
 app.get("/invoices/:invoiceId", async (req, res) => {
   let {invoiceId} = req.params
@@ -1709,7 +1640,6 @@ app.get("/invoices/:invoiceId", async (req, res) => {
  * /payInvoice:
  *   post:
  *     summary: Pay an invoice
- *     description: Marks an invoice as paid for a specific customer.
  *     tags:
  *       - Invoices
  *     security:
@@ -1723,7 +1653,6 @@ app.get("/invoices/:invoiceId", async (req, res) => {
  *             properties:
  *               invoiceId:
  *                 type: integer
- *                 description: The ID of the invoice to be paid
  *                 example: 123
  *     responses:
  *       200:
@@ -1732,52 +1661,10 @@ app.get("/invoices/:invoiceId", async (req, res) => {
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Success message
- *                   example: "Invoice 123 for customer 456 has been paid."
- *                 invoice:
- *                   type: object
- *                   properties:
- *                     invoiceId:
- *                       type: integer
- *                       description: The ID of the invoice
- *                     customerId:
- *                       type: string
- *                       description: The ID of the customer
- *                     amount:
- *                       type: number
- *                       description: The amount of the invoice
- *                     date:
- *                       type: string
- *                       format: date-time
- *                       description: The date of the invoice
- *                     paid:
- *                       type: boolean
- *                       description: Payment status of the invoice
  *       400:
  *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Invoice is already paid."
  *       404:
  *         description: Not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   description: Error message
- *                   example: "Customer not found."
  */
 app.post("/payInvoice", verifyToken, (req, res) => {
   const { invoiceId } = req.body;
@@ -1812,77 +1699,26 @@ app.post("/payInvoice", verifyToken, (req, res) => {
  *   post:
  *     summary: Use units for a customer's postpaid plan
  *     tags:
- *       - Misc
- *     description: Deducts a random number of units between 100 and 500 (in multiples of 5) for a customer with an active postpaid plan.
+ *       - Admin
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - customerMail
  *             properties:
  *               customerMail:
  *                 type: string
- *                 description: The email address of the customer.
  *                 example: johndoe@example.com
  *     responses:
  *       200:
  *         description: Successfully updated units used for the postpaid plan.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   description: ID of the postpaid plan.
- *                 planId:
- *                   type: integer
- *                   description: ID of the plan.
- *                 unitsUsed:
- *                   type: integer
- *                   description: The updated units used.
- *                 billingCycle:
- *                   type: string
- *                   description: The billing cycle of the postpaid plan.
- *                 plan:
- *                   type: object
- *                   properties:
- *                     planName:
- *                       type: string
- *                       description: Name of the plan.
  *       400:
  *         description: Customer does not have a postpaid plan active.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: customer does not have a postpaid plan active
  *       404:
  *         description: Customer does not exist.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: customer does not exist
  *       500:
  *         description: Internal server error.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Internal server error
  */
 app.post("/admin/useUnits", async (req,res)=>{
 
@@ -1927,7 +1763,6 @@ app.post("/admin/useUnits", async (req,res)=>{
  * /prepaidPlans:
  *   get:
  *     summary: Retrieve a list of prepaid plans
- *     description: Fetch all prepaid plans from the database, including related plan data.
  *     tags:
  *       - Plans
  *     responses:
@@ -1937,56 +1772,10 @@ app.post("/admin/useUnits", async (req,res)=>{
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 prepaidPlans:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                         description: The prepaid plan ID
- *                         example: 1
- *                       planId:
- *                         type: integer
- *                         description: The related plan ID
- *                         example: 101
- *                       unitsAvailable:
- *                         type: integer
- *                         description: The number of units available
- *                         example: 1000
- *                       prepaidBalance:
- *                         type: number
- *                         description: The prepaid balance
- *                         example: 50.75
- *                       planName:
- *                         type: string
- *                         description: The name of the plan
- *                         example: "Basic Prepaid Plan"
- *                       planDescription:
- *                         type: string
- *                         description: The description of the plan
- *                         example: "This plan offers 1000 units with a balance of $50.75."
  *       404:
  *         description: No prepaid plans found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "No prepaid plans found"
  *       500:
  *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Internal server error"
  */
 app.get("/prepaidPlans", async (req, res) => {
   try {
@@ -2025,7 +1814,6 @@ app.get("/prepaidPlans", async (req, res) => {
  * /postpaidPlans:
  *   get:
  *     summary: Retrieve a list of postpaid plans
- *     description: Fetch all postpaid plans from the database, including related plan data.
  *     tags:
  *       - Plans
  *     responses:
@@ -2035,56 +1823,10 @@ app.get("/prepaidPlans", async (req, res) => {
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 postpaidPlans:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                         description: The postpaid plan ID
- *                         example: 1
- *                       planId:
- *                         type: integer
- *                         description: The related plan ID
- *                         example: 101
- *                       unitsUsed:
- *                         type: integer
- *                         description: The number of units used
- *                         example: 500
- *                       billingCycle:
- *                         type: string
- *                         description: The billing cycle of the postpaid plan
- *                         example: "Monthly"
- *                       planName:
- *                         type: string
- *                         description: The name of the plan
- *                         example: "Unlimited Talk & Text"
- *                       planDescription:
- *                         type: string
- *                         description: The description of the plan
- *                         example: "This plan offers unlimited talk and text with 5GB of data."
  *       404:
  *         description: No postpaid plans found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "No postpaid plans found"
  *       500:
  *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Internal server error"
  */
 app.get("/postpaidPlans", async (req, res) => {
   try {
@@ -2123,7 +1865,6 @@ app.get("/postpaidPlans", async (req, res) => {
  * /viewPlan:
  *   post:
  *     summary: Retrieve a specific plan by ID
- *     description: Fetches a plan from the database using the provided plan ID.
  *     tags:
  *       - Plans
  *     requestBody:
@@ -2134,8 +1875,7 @@ app.get("/postpaidPlans", async (req, res) => {
  *             type: object
  *             properties:
  *               planId:
- *                 type: int
- *                 description: The ID of the plan to retrieve
+ *                 type: integer
  *                 example: 157158973
  *     responses:
  *       201:
@@ -2144,11 +1884,6 @@ app.get("/postpaidPlans", async (req, res) => {
  *           application/json:
  *             schema:
  *               type: object
- *               properties:
- *                 plan:
- *                   type: object
- *                   description: The plan object
- *                   example: { "planId": "12345", "name": "Sample Plan", "details": "Plan details here" }
  *       400:
  *         description: Bad request
  *       404:
@@ -2166,6 +1901,31 @@ app.post("/viewPlan",async (req,res)=>{
   res.status(201).json({plan})
 })
 
+/**
+ * @swagger
+ * /downloadInvoice/{invoiceId}:
+ *   get:
+ *     summary: Download invoice as PDF
+ *     tags:
+ *       - Invoices
+ *     parameters:
+ *       - in: path
+ *         name: invoiceId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the invoice
+ *         example: 123
+ *     responses:
+ *       200:
+ *         description: Invoice retrieved successfully as PDF
+ *         content:
+ *           application/pdf:
+ *       404:
+ *         description: Invoice not found
+ *       500:
+ *         description: Internal server error
+ */
 app.get('/downloadInvoice/:invoiceId', async (req, res) => {
   const { invoiceId } = req.params;
 
