@@ -1,0 +1,241 @@
+2024-09-23 12:13:53 info: Request: POST /register - {"name":"salaj","email":"salaj@gmail.com","password":"salaj","phone":"6767667654"}
+2024-09-23 12:13:53 info: User registered: salaj@gmail.com
+2024-09-23 20:16:25 info: Request: POST /register - {"name":"John Doe","email":"johndoe@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:16:25 info: User registered: johndoe@example.com
+2024-09-23 20:16:25 info: Request: POST /register - {"email":"johndoe@example.com"}
+2024-09-23 20:19:33 info: Request: POST /register - {"name":"John Doe","email":"johndoe@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:19:33 info: User registered: johndoe@example.com
+2024-09-23 20:19:33 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:19:33 info: Request: POST /register - {"email":"johndoe@example.com"}
+2024-09-23 20:21:29 info: Request: POST /register - {"name":"John Doe","email":"johndoe@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:21:29 info: User registered: johndoe@example.com
+2024-09-23 20:21:29 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:35:02 info: Request: POST /register - {"name":"John Doe","email":"johndoe@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:35:02 info: User registered: johndoe@example.com
+2024-09-23 20:35:02 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:35:47 info: Request: POST /register - {"name":"John Doe","email":"johndoe@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:35:47 info: User registered: johndoe@example.com
+2024-09-23 20:35:47 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:37:39 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:37:39 info: User registered: johndoe1234@example.com
+2024-09-23 20:37:39 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:41:26 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:41:26 info: User registered: johndoe1234@example.com
+2024-09-23 20:41:26 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:42:46 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:42:46 info: User registered: johndoe1234@example.com
+2024-09-23 20:42:46 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:48:12 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:48:12 info: User registered: johndoe1234@example.com
+2024-09-23 20:48:12 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:53:47 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:53:47 info: User registered: johndoe1234@example.com
+2024-09-23 20:53:47 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:53:47 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:53:47 info: User registered: johndoe1234@example.com
+2024-09-23 20:53:47 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:53:47 info: Request: POST /register - {"name":"Jane Doe","email":"johndoe1234@example.com","password":"password456","phone":"0987654321"}
+2024-09-23 20:53:47 info: User registered: johndoe1234@example.com
+2024-09-23 20:53:47 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:54:48 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:54:48 info: User registered: johndoe1234@example.com
+2024-09-23 20:54:48 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:54:48 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:54:48 info: User registered: johndoe1234@example.com
+2024-09-23 20:54:48 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:54:48 info: Request: POST /register - {"name":"Jane Doe","email":"johndoe1234@example.com","password":"password456","phone":"0987654321"}
+2024-09-23 20:54:48 info: User registered: johndoe1234@example.com
+2024-09-23 20:54:48 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:57:20 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:57:20 info: User registered: johndoe1234@example.com
+2024-09-23 20:57:20 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 20:57:20 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 20:57:20 info: User registered: johndoe1234@example.com
+2024-09-23 20:57:20 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 20:57:20 info: Request: POST /register - {"name":"Jane Doe","email":"johndoe1234@example.com","password":"password456","phone":"0987654321"}
+2024-09-23 20:57:20 info: User registered: johndoe1234@example.com
+2024-09-23 20:57:20 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 21:03:15 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:03:15 info: User registered: johndoe1234@example.com
+2024-09-23 21:03:15 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 21:03:15 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:03:15 info: User registered: johndoe1234@example.com
+2024-09-23 21:03:15 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 21:03:15 info: Request: POST /register - {"name":"Jane Doe","email":"johndoe1234@example.com","password":"password456","phone":"0987654321"}
+2024-09-23 21:03:15 info: User registered: johndoe1234@example.com
+2024-09-23 21:03:15 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-23 21:35:10 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:35:10 info: User registered: johndoe1234@example.com
+2024-09-23 21:35:10 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-23 21:36:29 info: Request: GET /register - {"name":"John Doe","email":"joh33123n@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:36:32 info: Request: POST /register - {"name":"John Doe","email":"joh33123n@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:36:32 info: User registered: joh33123n@example.com
+2024-09-23 21:37:01 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-23 21:37:01 info: User registered: johndoe1234@example.com
+2024-09-23 21:37:01 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 02:17:21 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 02:17:21 info: User registered: johndoe1234@example.com
+2024-09-24 02:17:21 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 02:17:43 info: Request: POST /register - {"name":"John Doe","email":"joh33123n@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 02:17:43 info: User registered: joh33123n@example.com
+2024-09-24 02:18:39 info: Request: POST /register - {"name":"John Doe","email":"johndoe1234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 02:18:39 info: User registered: johndoe1234@example.com
+2024-09-24 02:18:40 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Unique constraint failed on the constraint: `Customer_customerMail_key`
+2024-09-24 02:18:40 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 10:19:38 info: Request: POST /register - {"name":"John Doe","email":"johndoe12234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 10:19:38 info: User registered: johndoe12234@example.com
+2024-09-24 10:19:38 error: Error in /register: 
+Invalid `prisma.customer.create()` invocation in
+C:\Users\e032050\case-study-final-v2\case-study\rest-endpoints\index.js:285:41
+
+  282 try {
+  283   let newCustomer = new Customer(name, email, phone, password);
+  284   logger.info(`User registered: ${email}`);
+→ 285   newCustomer = await prisma.customer.create(
+Database `telecom-billing-system-final-v2-test-db` does not exist on the database server at `localhost:3306`.
+2024-09-24 10:19:38 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 10:25:36 info: Request: POST /register - {"name":"John Doe","email":"johndoe12234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 10:25:36 info: User registered: johndoe12234@example.com
+2024-09-24 10:25:36 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 10:38:03 info: Request: POST /register - {"name":"John Doe","email":"johndoe12234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 10:38:03 info: User registered: johndoe12234@example.com
+2024-09-24 10:38:03 info: Request: POST /register - {"email":"johndoe1234@example.com"}
+2024-09-24 11:00:10 info: Request: POST /register - {"name":"John Doe","email":"johndoe12234@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 11:00:10 info: User registered: johndoe12234@example.com
+2024-09-24 11:00:10 info: Request: POST /login - {"email":"johndoe12234@example.com","password":"password123"}
+2024-09-24 11:00:10 info: User logged in: johndoe12234@example.com
+2024-09-24 11:00:10 info: Request: POST /login - {"email":"johndoe12234@example.com","password":"wrongpassword"}
+2024-09-24 11:00:10 info: Request: POST /login - {"email":"johndoe12234@example.com"}
+2024-09-24 11:25:55 info: Request: POST /register - {"name":"nityam tiwari","email":"nityam@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 11:25:55 info: User registered: nityam@example.com
+2024-09-24 11:26:02 info: Request: POST /login - {"name":"nityam tiwari","email":"nityam@example.com","password":"password123","phone":"1234567890"}
+2024-09-24 11:26:02 info: User logged in: nityam@example.com
+2024-09-24 11:27:11 info: Request: POST /admin/addPlan - {"planName":"Premium Postpaid Plan","ratePerUnit":0.05,"planType":"POSTPAID","prepaidBalance":0,"billingCycle":"30"}
+2024-09-24 11:28:19 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@gmail.com"}
+2024-09-24 11:28:55 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com"}
+2024-09-24 11:29:51 info: Request: POST /buyPlan - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:04 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:16 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:27 info: Request: POST /admin/setDueDateTwoDaysFromNow - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:34 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:41 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:48 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:30:54 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:42:05 info: Request: POST /viewInvoiceHistory - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:42:32 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:42:39 info: Request: POST /viewInvoiceHistory - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:45:52 info: Request: POST /viewInvoiceHistory - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:46:04 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:46:16 info: Request: POST /viewInvoiceHistory - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:46:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:46:36 info: Request: POST /viewInvoiceHistory - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:19 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:24 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:26 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:28 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:28 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:28 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:28 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:28 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:29 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:30 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:31 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}
+2024-09-24 11:47:32 info: Request: POST /checkCustomerPlanStatus - {"customerMail":"nityam@example.com","planName":"Premium Postpaid Plan","planType":"POSTPAID"}

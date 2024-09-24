@@ -1,5 +1,5 @@
 // import LinkedList from './LinkedList.js'
-import { LinkedList, Node } from "./LinkedList.js";
+// import { LinkedList, Node } from "./LinkedList.js";
 
 class Customer {
   constructor(customerName,customerMail,customerPhone,customerPassword) {

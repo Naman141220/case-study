@@ -8,6 +8,7 @@ import swaggerUi, { generateHTML } from "swagger-ui-express";
 import swaggerSpec from './swaggerConfig.js'; 
 import express from "express";
 import bodyParser from "body-parser";
+import logger from './logger.js';
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -18,7 +19,7 @@ import {
   PostpaidPlan,
   PrepaidPlan,
 } from "../telecom-billing-system.js";
-import { LinkedList } from "../LinkedList.js";
+// import { LinkedList } from "../LinkedList.js";
 const app = express();
 const PORT = 9099;
 const SECRET_KEY = process.env.JWT_SECRET;
@@ -46,6 +47,11 @@ const custIds = dummyCustomers.forEach((customer) => {
     ...customer,
     invoices: [],
   };
+});
+
+app.use((req, res, next) => {
+  logger.info(`Request: ${req.method} ${req.url} - ${JSON.stringify(req.body)}`);
+  next();
 });
 
 function verifyToken(req, res, next) {
@@ -268,13 +274,14 @@ app.post('/register', async (req, res) => {
   const { name, email, password, phone } = req.body;
 
   if (!name || !email || !password || !phone) {
-    return res.status(400).send('All fields are required.');
+    return res.status(400).send({ errors: 'All fields are required.' }); // Update here
   }
 
   const hashedPassword = bcrypt.hashSync(password, 8);
 
   try {
     let newCustomer = new Customer(name, email, phone, password);
+    logger.info(`User registered: ${email}`);
     newCustomer = await prisma.customer.create({
       data: {
         customerId: newCustomer.customerId,
@@ -290,12 +297,14 @@ app.post('/register', async (req, res) => {
       expiresIn: 86400, // 24 hours
     });
 
-    res.status(201).send({ auth: true, token });
+    res.status(201).send({ auth: true, token, message: 'User registered successfully' }); // Ensure message is returned
   } catch (error) {
+    logger.error(`Error in /register: ${error.message}`);
     console.error('Error registering user:', error);
-    res.status(500).send('There was a problem registering the user.');
+    res.status(400).send('There was a problem registering the user.');
   }
 });
+
 
 
 let loggedInCustomers = [];
@@ -343,7 +352,6 @@ let loggedInCustomers = [];
  *       500:
  *         description: There was a problem logging in
  */
-
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -371,10 +379,11 @@ app.post('/login', async (req, res) => {
     });
 
     loggedInCustomers.push(customer.customerId);
-
+    logger.info(`User logged in: ${email}`);
     console.log(loggedInCustomers[0]);
     res.status(200).send({ auth: true, token });
   } catch (error) {
+    logger.error(`Error in /login: ${error.message}`);
     res.status(500).send('There was a problem logging in.');
   }
 });
@@ -506,8 +515,23 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
         });
       }
     } else if (planType === 'POSTPAID') {
+      // Fetch the most recent invoice for the customer
+      const latestInvoice = await prisma.invoice.findFirst({
+        where: { customerId: customer.customerId },
+        orderBy: { date: 'desc' }, // Assuming you have a 'date' field in your Invoice model
+      });
+
+      // Check the status of the most recent invoice
+      if (latestInvoice && latestInvoice.status === 'not paid') {
+        return res.status(200).json({
+          message: "A previous invoice is still unpaid. No new invoice will be generated.",
+          latestInvoice,
+          plan
+        });
+      }
+
+      // If there are 5 days or less left, use units and generate invoice
       if (daysLeft <= 5) {
-        // Use units and generate invoice
         await useUnitsForCustomer(customerMail);
         const generatedInvoice = await generateInvoiceForCustomer(customerMail);
 
@@ -529,6 +553,7 @@ app.post("/checkCustomerPlanStatus", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 /**
@@ -2022,6 +2047,8 @@ app.get('/downloadInvoice/:invoiceId', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default server
